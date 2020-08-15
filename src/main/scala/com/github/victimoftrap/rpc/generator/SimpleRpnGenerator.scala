@@ -20,6 +20,9 @@ class SimpleRpnGenerator(operatorMap: Map[String, Operator]) extends RpnGenerato
       if (operatorOption.isDefined) {
         val elem = new OperatorRpnElement(operatorOption.get)
 
+        if (operatorOption.get.arity() == 1) {
+          operatorStack = elem :: operatorStack
+        }
         if (operatorOption.get.arity() == 2) {
           val (removedOperators, updatedStack) = removeOperatorsFromStack(operatorStack, elem)
           resultRpn.addAll(removedOperators)
