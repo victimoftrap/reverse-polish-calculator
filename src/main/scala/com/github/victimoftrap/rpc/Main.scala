@@ -17,6 +17,7 @@ object Main {
       "floor" -> Floor(9),
       "ceil" -> Ceil(9),
       "round" -> Round(9),
+      "m" -> UnaryMinus(9),
       "(" -> OpenBracket(),
     )
 

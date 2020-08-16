@@ -10,6 +10,7 @@ class SimpleNotationTranslator(val operatorMap: Map[String, Operator]) extends N
   override def toPostfixNotation(tokens: List[Token]): List[Token] = {
     val outputRpn = ListBuffer[Token]()
     val operatorStack = ListBuffer[(Token, Operator)]()
+    var prevToken: Token = null
 
     tokens.foreach(token => {
       token.tokenType match {
@@ -29,6 +30,10 @@ class SimpleNotationTranslator(val operatorMap: Map[String, Operator]) extends N
           }
 
         case TokenType.OPERATOR =>
+          if (token.value == "-" && prevToken == null || prevToken != null && prevToken.tokenType != TokenType.NUMBER) {
+            token.value = "m"
+          }
+
           val operatorOption = operatorMap.get(token.value)
           if (operatorOption.isDefined) {
             val operator = operatorOption.get
@@ -50,6 +55,7 @@ class SimpleNotationTranslator(val operatorMap: Map[String, Operator]) extends N
             }
           }
       }
+      prevToken = token
     })
 
     if (operatorStack.nonEmpty) {
