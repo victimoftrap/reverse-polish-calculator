@@ -30,7 +30,8 @@ class SimpleNotationTranslator(val operatorMap: Map[String, Operator]) extends N
           }
 
         case TokenType.OPERATOR =>
-          if (token.value == "-" && prevToken == null || prevToken != null && prevToken.tokenType != TokenType.NUMBER) {
+          if (token.value == "-" && prevToken == null ||
+            prevToken != null && prevToken.tokenType == TokenType.OPEN_BRACKET) {
             token.value = "m"
           }
 

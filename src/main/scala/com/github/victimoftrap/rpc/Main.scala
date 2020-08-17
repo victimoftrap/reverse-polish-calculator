@@ -3,7 +3,7 @@ package com.github.victimoftrap.rpc
 import com.github.victimoftrap.rpc.calculator.RpnBasedCalculator
 import com.github.victimoftrap.rpc.calculator.converter.DefaultTokenConverter
 import com.github.victimoftrap.rpc.operators._
-import com.github.victimoftrap.rpc.tokenizer.SimpleTokenizer
+import com.github.victimoftrap.rpc.tokenizer.AdvancedTokenizer
 import com.github.victimoftrap.rpc.translator.SimpleNotationTranslator
 
 object Main {
@@ -21,12 +21,13 @@ object Main {
       "(" -> OpenBracket(),
     )
 
-    val tokenizer = new SimpleTokenizer
+    val tokenizer = new AdvancedTokenizer
     val translator = new SimpleNotationTranslator(operatorMap)
     val converter = new DefaultTokenConverter(operatorMap)
     val calculator = new RpnBasedCalculator(converter)
 
-    val postfixTokens = translator.toPostfixNotation(tokenizer.tokens("2 * ( 1 + 2 ) - 3 + 2 * 1"))
+    val tokens = tokenizer.tokens("1+5*(2+5.3)")
+    val postfixTokens = translator.toPostfixNotation(tokens)
     println(calculator.calculate(postfixTokens))
   }
 }
