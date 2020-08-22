@@ -24,6 +24,10 @@ class SimpleNotationTranslator(val operatorMap: Map[String, Operator]) extends N
             .map(x => x._1)
             .takeWhile(_.tokenType != TokenType.OPEN_BRACKET)
 
+          if (removedOps == operatorStack.map(_._1)) {
+            throw new IncompleteBracketsException
+          }
+
           outputRpn.addAll(removedOps.reverse)
           if (removedOps.nonEmpty) {
             operatorStack.remove(operatorStack.length - removedOps.length - 1, removedOps.length + 1)
@@ -58,6 +62,10 @@ class SimpleNotationTranslator(val operatorMap: Map[String, Operator]) extends N
       }
       prevToken = token
     })
+
+    if (operatorStack.exists(op => op._1.tokenType == TokenType.OPEN_BRACKET)) {
+      throw new IncompleteBracketsException
+    }
 
     if (operatorStack.nonEmpty) {
       outputRpn.addAll(operatorStack.reverse.map(_._1))
